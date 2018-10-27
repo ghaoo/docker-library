@@ -44,8 +44,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
 ADD ./shopnc/shopnc.so /usr/local/lib/php/extensions/no-debug-non-zts-20170718/
 ADD ./shopnc/shopnc.ini /usr/local/etc/php/conf.d/
 
-#RUN cd /usr/local/etc/php \
-#    && mv php.ini-development php.ini
+RUN cd /usr/local/etc/php \
+    && mv php.ini-development php.ini
 
 WORKDIR /data/www
 
