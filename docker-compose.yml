@@ -1,0 +1,90 @@
+version: "3.7"
+services:
+  #######################################
+  # Nginx
+  #######################################
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - E:\data\www:/data/www
+      - ./nginx/logs:/var/log/nginx
+    links:
+      - php
+      - php56
+
+  #######################################
+  # PHP
+  #######################################
+  php:
+    build: ./php
+    ports:
+      - "9000"
+    volumes:
+      - E:\data\www:/data/www
+      - ./php/logs:/var/log
+    links:
+      - mysql
+
+  #######################################
+  # PHP56
+  #######################################
+  php56:
+    build: ./php56
+    ports:
+      - "9000"
+    volumes:
+      - E:\data\www:/data/www
+      - ./php56/logs:/var/log
+    links:
+      - mysql
+
+  #######################################
+  # Mysql
+  #######################################
+  mysql:
+    build: ./mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+
+  #######################################
+  # Mysql
+  #######################################
+  mysql5:
+    build: ./mysql5
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./mysql5/data:/var/lib/mysql
+
+  #######################################
+  # Redis
+  #######################################
+  redis:
+    build: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
+      - ./redis/logs/:/var/log/redis/
+
+  #######################################
+  # MongoDB
+  #######################################
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    #volumes:
+    #  - ./mongo/data:/data/db
+    command: mongod --auth --smallfiles
