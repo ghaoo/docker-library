@@ -12,7 +12,6 @@ services:
       - ./nginx/logs:/var/log/nginx
     links:
       - php
-      - php56
 
   #######################################
   # PHP
@@ -30,15 +29,15 @@ services:
   #######################################
   # PHP56
   #######################################
-  php56:
-    build: ./php56
-    ports:
-      - "9000"
-    volumes:
-      - E:\data\www:/data/www
-      - ./php56/logs:/var/log
-    links:
-      - mysql
+#  php56:
+#    build: ./php56
+#    ports:
+#      - "9000"
+#    volumes:
+#      - E:\data\www:/data/www
+#      - ./php56/logs:/var/log
+#    links:
+#      - mysql
 
   #######################################
   # Mysql
@@ -53,16 +52,16 @@ services:
       - ./mysql/data:/var/lib/mysql
 
   #######################################
-  # Mysql
+  # Mysql5
   #######################################
-  mysql5:
-    build: ./mysql5
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-    volumes:
-      - ./mysql5/data:/var/lib/mysql
+  #mysql5:
+  #  build: ./mysql5
+  #  ports:
+  #    - "3307:3306"
+  #  environment:
+  #    MYSQL_ROOT_PASSWORD: 123456
+  #  volumes:
+  #    - ./mysql5/data:/var/lib/mysql
 
   #######################################
   # Redis

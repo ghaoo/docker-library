@@ -1,4 +1,4 @@
-FROM php:fpm
+FROM php:7.2-fpm
 MAINTAINER GuHao <378999587@qq.com>
 
 ENV TZ=Asia/Shanghai
@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
         libxml2-dev \
         libpng-dev \
         libbz2-dev \
-        libssl-dev \
         libtool \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
@@ -35,7 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
     && pecl install mongodb \
     && pecl install xdebug \
     && pecl install swoole \
-    && docker-php-ext-enable redis mongodb xdebug swoole \
+    && pecl install mcrypt \
+    && docker-php-ext-enable redis mongodb xdebug swoole mcrypt \
     && rm -rf /tmp/pear
 
 #ADD ./laravel.ini /usr/local/etc/php/conf.d
