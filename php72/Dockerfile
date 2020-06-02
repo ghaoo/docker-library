@@ -1,4 +1,4 @@
-FROM php:fpm
+FROM php:7.2-fpm
 MAINTAINER GuHao <378999587@qq.com>
 
 ENV TZ=Asia/Shanghai
@@ -9,14 +9,13 @@ RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && sed 
 
 ADD ./pecl /usr/local/etc/php/pecl
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
         git \
         zip \
         libxml2-dev \
         libfreetype6-dev \
-        libjpeg62-turbo-dev \
         libpng-dev \
-        libonig-dev \
         libjpeg-dev \
         libz-dev \
         libssl-dev \
@@ -29,8 +28,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean -y \
     && apt-get autoremove -y
 
-
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+RUN docker-php-ext-install -j$(nproc) iconv \
+  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install -j$(nproc) gd \
   && docker-php-ext-install \
     mbstring \
@@ -44,13 +43,15 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && pecl install redis \
   && pecl install xdebug \
   && pecl install mcrypt \
-  && docker-php-ext-enable redis mcrypt xdebug \
-  && git clone https://github.com/swoole/swoole-src.git \
-  && cd swoole-src \
-  && /usr/local/bin/phpize && ./configure && make && make install \
-  && cd .. && rm -rf swoole-src \
-  && docker-php-ext-enable swoole \
+  && pecl install swoole \
+  && docker-php-ext-enable redis mcrypt xdebug swoole \
   && rm -rf /tmp/pear
+
+#ADD ./laravel.ini /usr/local/etc/php/conf.d
+#ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
+
+ADD ./shopnc/shopnc.so /usr/local/lib/php/extensions/no-debug-non-zts-20170718/
+ADD ./shopnc/docker-php-ext-shopnc.ini /usr/local/etc/php/conf.d/
 
 RUN cd /usr/local/etc/php \
     && mv php.ini-development php.ini
