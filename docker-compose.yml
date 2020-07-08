@@ -26,11 +26,24 @@ services:
 #    links:
 #      - mysql
 
+#  #######################################
+#  # PHP72
+#  #######################################
+#  php:
+#    build: ./php72
+#    ports:
+#      - "9000"
+#    volumes:
+#      - E:\data\www:/data/www
+#      - ./php/logs:/var/log
+#    links:
+#      - mysql
+
   #######################################
-  # PHP72
+  # PHP71
   #######################################
   php:
-    build: ./php72
+    build: ./php71
     ports:
       - "9000"
     volumes:
@@ -38,6 +51,19 @@ services:
       - ./php/logs:/var/log
     links:
       - mysql
+
+#  #######################################
+#  # PHP70
+#  #######################################
+#  php:
+#    build: ./php70
+#    ports:
+#      - "9000"
+#    volumes:
+#      - E:\data\www:/data/www
+#      - ./php/logs:/var/log
+#    links:
+#      - mysql
 
   #######################################
   # PHP56

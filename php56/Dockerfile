@@ -25,8 +25,8 @@ RUN apk update && apk add --no-cache \
         libmcrypt-dev \
     && pecl install xdebug-2.5.0 \
     && docker-php-ext-enable xdebug \
-	&& pecl install redis \
-	&& docker-php-ext-enable redis
+#	&& pecl install redis \
+#	&& docker-php-ext-enable redis
 
 RUN  docker-php-ext-configure gd \
 	    --with-gd \
